@@ -3,15 +3,15 @@ import { NavLink, Link, useParams,  Outlet } from "react-router-dom";
 
 export default function HostVanDetail() {
 
-    const [currentVan, setCurrentVan] = useState([])
+    const [currentVan, setCurrentVan] = React.useState(null)
     const { id } = useParams()
 
     useEffect(() => {
         fetch(`/api/host/vans/${id}`)
             .then(res => res.json())
-            .then(data => setCurrentVan(data.vans))
+            .then(data => setCurrentVan(data.vans[0]))
 
-        }, [id])
+        }, [])
 
         const activeStyles = {
             fontWeight: "bold",
@@ -23,18 +23,18 @@ export default function HostVanDetail() {
             return <h1>Loading...</h1>
         }
 
-    const vanElement = currentVan.map(van => (
-        <div key={van.id} className="host-van-detail">
-            <img src={van.imageUrl} width={150}/>
-            <div className="host-van-detail-info-text">
-                <i className={`van-type van-type-${van.type}`}>
-                    {van.type}
-                </i>
-                <h3>{van.name}</h3>
-                <h4>{van.price} / Day</h4>
-            </div>
-        </div>
-    ))
+    // const vanElement = currentVan.map(van => (
+    //     <div key={van.id} className="host-van-detail">
+    //         <img src={van.imageUrl} width={150}/>
+    //         <div className="host-van-detail-info-text">
+    //             <i className={`van-type van-type-${van.type}`}>
+    //                 {van.type}
+    //             </i>
+    //             <h3>{van.name}</h3>
+    //             <h4>{van.price} / Day</h4>
+    //         </div>
+    //     </div>
+    // ))
 
     return (
        <section>
@@ -45,7 +45,16 @@ export default function HostVanDetail() {
                 relative="path">&larr; <span>Back to all vans</span>
             </Link>
             <div className="host-van-detail-layout-container">
-                {vanElement}
+                <div className="host-van-detail">
+                    <img src={currentVan.imageUrl} width={150}/>
+                    <div className="host-van-detail-info-text">
+                    <i className={`van-type van-type-${currentVan.type}`}>
+                        {currentVan.type}
+                    </i>
+                    <h3>{currentVan.name}</h3>
+                    <h4>{currentVan.price} / Day</h4>
+                    </div>
+                </div>
 
             {/* Navigation Bar for Vans Details */}
             <nav className="host-van-detail-nav">
@@ -54,7 +63,7 @@ export default function HostVanDetail() {
                 <NavLink to="photos" style={({isActive}) => isActive ? activeStyles : null }>Photos</NavLink>
             </nav>
 
-            <Outlet />
+            <Outlet context={{ currentVan }}/>
             </div>
        </section>
     )
