@@ -40,7 +40,7 @@ export default function HostVanDetail() {
        <section>
             <Link 
                 to={".."}
-                end
+                end="true"
                 className="back-button"
                 relative="path">&larr; <span>Back to all vans</span>
             </Link>
