@@ -26,6 +26,12 @@ export default function Header() {
                 to="/vans" 
                 style={({isActive}) => isActive ? activeStyles : null}>Vans
             </NavLink>
+            <NavLink to={"login"} className="login-link">
+                <img 
+                    src={require("../assets/images/avatar-icon.png")}
+                    className="login-icon"
+                />
+            </NavLink>
             </nav>
         </header>
     )
